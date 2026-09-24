@@ -1,0 +1,75 @@
+# Reemplazar "org" por la organizacion de su cuenta en app.serverless.com
+# Si aun no tienen, pueden comentar las dos lineas siguientes
+# org: universidaddeantioquia
+# app: crud-vehiculos
+service: crud-vehiculos
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  architecture: arm64
+  region: us-east-1
+  environment:
+    VEHICULOS_TABLE: ${self:service}-vehiculos-${sls:stage}
+    DYNAMO_ENDPOINT: ${env:DYNAMO_ENDPOINT, ''}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:Scan
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [VehiculosTable, Arn]
+
+functions:
+  crear:
+    handler: handler.crear
+    events:
+      - httpApi:
+          path: /vehiculos
+          method: post
+  listar:
+    handler: handler.listar
+    events:
+      - httpApi:
+          path: /vehiculos
+          method: get
+  obtener:
+    handler: handler.obtener
+    events:
+      - httpApi:
+          path: /vehiculos/{id}
+          method: get
+  actualizar:
+    handler: handler.actualizar
+    events:
+      - httpApi:
+          path: /vehiculos/{id}
+          method: put
+  eliminar:
+    handler: handler.eliminar
+    events:
+      - httpApi:
+          path: /vehiculos/{id}
+          method: delete
+
+resources:
+  Resources:
+    VehiculosTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.VEHICULOS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+plugins:
+  - serverless-offline

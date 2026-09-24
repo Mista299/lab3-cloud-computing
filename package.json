@@ -1,0 +1,22 @@
+{
+  "name": "crud-vehiculos",
+  "version": "1.0.0",
+  "description": "API REST serverless para CRUD de vehiculos con AWS Lambda, API Gateway y DynamoDB",
+  "main": "handler.js",
+  "scripts": {
+    "start": "serverless offline",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.40.0",
+    "serverless-offline": "^14.4.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
