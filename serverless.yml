@@ -1,6 +1,6 @@
 # Reemplazar "org" por la organizacion de su cuenta en app.serverless.com
 # Si aun no tienen, pueden comentar las dos lineas siguientes
-# org: universidaddeantioquia
+# org: michaeltabares
 # app: crud-vehiculos
 service: crud-vehiculos
 
@@ -73,3 +73,8 @@ resources:
 
 plugins:
   - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 4000
+    noPrependStageInUrl: true

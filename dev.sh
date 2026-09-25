@@ -4,7 +4,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-PORT="${PORT:-3001}"
+PORT="${PORT:-4000}"
 DYNAMO_PORT="${DYNAMO_PORT:-8000}"
 DYNAMO_ENDPOINT="${DYNAMO_ENDPOINT:-http://localhost:${DYNAMO_PORT}}"
 TABLE_NAME="crud-vehiculos-vehiculos-dev"

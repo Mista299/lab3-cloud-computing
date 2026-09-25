@@ -1,0 +1,150 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-09-24T18:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2024.6.0",
+  "resources": [
+    {
+      "_id": "wrk_aaaa1111",
+      "_type": "workspace",
+      "name": "CRUD Vehiculos",
+      "description": "API REST CRUD de vehiculos con AWS Lambda + DynamoDB",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base111",
+      "_type": "environment",
+      "parentId": "wrk_aaaa1111",
+      "name": "Base Environment",
+          "data": {
+            "base_url": "http://localhost:4000",
+            "vehiculo_id": ""
+          },
+          "color": "#7d69cb"
+        },
+        {
+          "_id": "env_aws1111",
+          "_type": "environment",
+          "parentId": "wrk_aaaa1111",
+          "name": "AWS Production",
+      "data": {
+        "base_url": "https://REEMPLAZAR.execute-api.us-east-1.amazonaws.com",
+        "vehiculo_id": ""
+      },
+      "color": "#7d69cb"
+    },
+    {
+      "_id": "fld_veh11111",
+      "_type": "request_group",
+      "parentId": "wrk_aaaa1111",
+      "name": "Vehiculos",
+      "description": "Endpoints CRUD de la API"
+    },
+    {
+      "_id": "req_crear111",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Crear vehiculo",
+      "description": "POST /vehiculos - Crea un nuevo vehiculo. Retorna 201 con el item (incluye id UUID).",
+      "method": "POST",
+      "url": "{{ _.base_url }}/vehiculos",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"anio\": 2022,\n  \"placa\": \"ABC123\",\n  \"color\": \"Blanco\"\n}"
+      },
+      "scripts": {
+        "afterResponse": "if (insomnia.response && insomnia.response.status === 201) {\n  const data = insomnia.response.json();\n  if (data && data.id) {\n    insomnia.environment.set('vehiculo_id', data.id);\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_crear_bad",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Crear vehiculo - body invalido",
+      "description": "POST /vehiculos - Caso de error 400: falta el campo obligatorio 'marca'.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/vehiculos",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"modelo\": \"Corolla\",\n  \"anio\": 2022,\n  \"placa\": \"ABC123\"\n}"
+      }
+    },
+    {
+      "_id": "req_listar111",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Listar todos",
+      "description": "GET /vehiculos - Retorna 200 con el array de vehiculos.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/vehiculos",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_obtener1",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Obtener por id",
+      "description": "GET /vehiculos/{id} - Retorna 200 con el vehiculo o 404 si no existe. Usa la variable vehiculo_id del entorno.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/vehiculos/{{ _.vehiculo_id }}",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_obtener404",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Obtener por id - 404",
+      "description": "GET /vehiculos/{id} - Caso de error 404 con id inexistente.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/vehiculos/no-existe-123",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_actualiza",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Actualizar vehiculo",
+      "description": "PUT /vehiculos/{id} - Actualiza un vehiculo existente. Retorna 200 con el item actualizado o 404 si no existe. Usa la variable vehiculo_id del entorno.",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/vehiculos/{{ _.vehiculo_id }}",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"anio\": 2023,\n  \"placa\": \"ABC123\",\n  \"color\": \"Negro\"\n}"
+      }
+    },
+    {
+      "_id": "req_eliminar1",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Eliminar vehiculo",
+      "description": "DELETE /vehiculos/{id} - Elimina un vehiculo. Retorna 200 con mensaje de confirmacion o 404 si no existe. Usa la variable vehiculo_id del entorno.",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/vehiculos/{{ _.vehiculo_id }}",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_eliminar404",
+      "_type": "request",
+      "parentId": "fld_veh11111",
+      "name": "Eliminar vehiculo - 404",
+      "description": "DELETE /vehiculos/{id} - Caso de error 404 con id inexistente.",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/vehiculos/no-existe-123",
+      "headers": [],
+      "body": {}
+    }
+  ]
+}
