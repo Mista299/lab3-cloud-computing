@@ -60,4 +60,5 @@ else
 fi
 
 step "5. Iniciando serverless-offline en puerto ${PORT}..."
-exec ./node_modules/.bin/serverless offline --stage dev --httpPort "$PORT"
+exec ./node_modules/.bin/serverless offline --stage dev --httpPort "$PORT" \
+  || exec npx serverless offline --stage dev --httpPort "$PORT"
